@@ -1,17 +1,10 @@
-import { DatabaseModel } from "./model/DataBaseModel.js";
-import { server } from "./server.js";
+import express from "express"; // Importa o framework Express
+import cors from "cors"; // Importa o middleware Cors
+import { router } from './routes.js';
 
-const port: number = parseInt(process.env.SERVER_PORT as string);
+const server = express(); // Cria uma instância do servidor Express
+server.use(express.json()); // Habilita o uso de JSON no servidor
+server.use(cors()); // Habilita o uso do middleware Cors para lidar com CO
+server.use(router); // Habilita o uso das rotas do arquivo routes.ts
 
-new DatabaseModel().testeConexao().then((resbd) => {
-    if(resbd) {
-        console.clear();
-        console.log("Conexão com o banco realizada com sucesso!");
-        //Inicia o servidor
-        server.listen(port, () => {
-            console.log(`Servidor rodando em http://localhost:${port}`);
-        })
-    } else {
-        console.log('Não foi possível conectar ao banco de dados');
-    }
-})
+export { server }
